@@ -1,0 +1,134 @@
+openapi: 3.0.2
+info:
+  contact:
+    email: contact@example.com
+    url: http://example.com/contact
+  description: "This is an **example** API for the PredictaaS web service.\n# Introduction\n\
+    This API specification is intended to provide a skeleton for the required API\
+    \ paths expected for the \nPredictaaS ML web service. It is OpenAPI v3 compliant,\
+    \ check out \n[OpenAPI format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)\
+    \ for additional\nfeatures.\n"
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://example.com/terms/
+  title: Example.com
+  version: 1.0.0
+  x-logo:
+    url: https://redocly.github.io/openapi-template/logo.png
+servers:
+- url: http://example.com/api/v1
+- url: https://example.com/api/v1
+tags:
+- description: Example echo operations
+  name: Echo
+- description: Operations about app
+  name: App
+paths:
+  /mlapp/{appname}:
+    get:
+      description: "Some description of the operation. \nYou can use `markdown` here.\n"
+      operationId: get_ml_app_by_name
+      parameters:
+      - description: The name that needs to be fetched
+        explode: false
+        in: path
+        name: appname
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                appname: fooapp
+              schema:
+                $ref: '#/components/schemas/MLApp'
+          description: Success
+        "403":
+          description: Forbidden
+        "404":
+          description: Application not found
+      summary: Get ML application by name
+      tags:
+      - App
+      x-openapi-router-controller: openapi_server.controllers.app_controller
+    put:
+      description: Update ML application by name.
+      operationId: update_ml_app
+      parameters:
+      - description: The name that needs to be updated
+        explode: false
+        in: path
+        name: appname
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MLApp'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/MLApp'
+        description: Updated user object
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid application name supplied
+        "404":
+          description: App not found
+      summary: Updated app
+      tags:
+      - App
+      x-openapi-router-controller: openapi_server.controllers.app_controller
+components:
+  schemas:
+    Email:
+      description: Main contact email address
+      example: jane.doe@example.com
+      format: test
+      title: contact
+      type: string
+    MLApp:
+      example:
+        appname: PlantClassificator
+        entrypoint: plant_classificator
+        methods: '["predict","train"]'
+        contact: jane.doe@example.com
+      properties:
+        appname:
+          description: ML app supplied username
+          example: PlantClassificator
+          minLength: 4
+          title: appname
+          type: string
+        entrypoint:
+          description: Python's app entrypoint name
+          example: plant_classificator
+          minLength: 1
+          title: entrypoint
+          type: string
+        methods:
+          description: Methods implemented by the ML app
+          enum:
+          - predict
+          - train
+          example: '["predict","train"]'
+          minLength: 1
+          title: methods
+          type: string
+        contact:
+          description: Main contact email address
+          example: jane.doe@example.com
+          format: test
+          title: contact
+          type: string
+      title: MLApp
+      type: object
