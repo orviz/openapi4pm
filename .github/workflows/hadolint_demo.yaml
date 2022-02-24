@@ -1,10 +1,10 @@
-name: Run markdownlint with GitHub Actions
+name: Run hadolint with GitHub Actions
 on: [push]
 jobs:
   Run-Markdownlint:
     runs-on: ubuntu-latest
     container:
-      image: markdownlint/markdownlint:0.11.0
+      image: hadolint/hadolint:2.8.0-alpine
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -12,5 +12,4 @@ jobs:
       - run: echo "The workflow is now ready to test your code on the runner."
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
-      - run: markdownlint --help
+          hadolint flask_code/Dockerfile
