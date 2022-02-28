@@ -3,14 +3,11 @@ on: [push]
 jobs:
   Run-Markdownlint:
     runs-on: ubuntu-latest
-    container:
-      image: hadolint/hadolint:2.8.0-alpine
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls -l
-          hadolint flask_code/Dockerfile
+      - name: Run hadolint
+        uses: docker://hadolint/hadolint:2.8.0-alpine
+        with:
+          entrypoint: /bin/hadolint
+          args: flask_code/Dockerfile
