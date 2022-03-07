@@ -1,7 +1,7 @@
 name: Run hadolint with GitHub Actions
 on: [push]
 jobs:
-  Run-Markdownlint:
+  Run-Hadolint:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
