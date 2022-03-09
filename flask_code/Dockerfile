@@ -10,7 +10,6 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . /usr/src/app
 
 EXPOSE 8001
-
 ENTRYPOINT ["python3"]
 
 CMD ["-m", "openapi_server", "8001"]

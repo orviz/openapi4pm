@@ -1,13 +1,19 @@
 name: Run hadolint with GitHub Actions
 on: [push]
 jobs:
-  Run-Markdownlint:
+  Stat-Dockerfile:
     runs-on: ubuntu-latest
+    steps:
+      - name: "Check file existence"
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "flask_code/Dockerfile"
+  Run-Hadolint:
+    needs: Stat-Dockerfile
+    runs-on: ubuntu-latest
+    container: hadolint/hadolint:2.8.0-alpine
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run hadolint
-        uses: docker://hadolint/hadolint:2.8.0-alpine
-        with:
-          entrypoint: /bin/hadolint
-          args: flask_code/Dockerfile
+        run: /bin/hadolint flask_code/Dockerfile
